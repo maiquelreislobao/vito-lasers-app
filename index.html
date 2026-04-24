@@ -1,241 +1,502 @@
-import React, { useState } from "react";
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VITO Laser Level App</title>
+  <style>
+    :root {
+      --bg: #08090b;
+      --panel: #111216;
+      --green: #14c850;
+      --yellow: #f5b313;
+      --text: #ffffff;
+      --muted: #b7bbc2;
+      --line: rgba(255, 255, 255, 0.12);
+    }
 
-const translations = {
-  "pt-pt": {
-    label: "Laser Level App",
-    titleWhite: "Nivelamento profissional.",
-    titleGreen: "Na palma da mão.",
-    description:
-      "A aplicação VITO Laser Level transforma o seu smartphone num comando inteligente para os seus níveis a laser. Mais precisão, mais controlo, mais eficiência.",
-    compatibleTitle: "Compatível com os modelos",
-    downloadTitle: "Descarregue já",
-    downloadText: "E leve o seu trabalho a outro nível.",
-    play: "Disponível no Google Play",
-    apple: "Descarregar na App Store",
-    bottom: [
-      { title: "Precisão", text: "Resultados perfeitos em cada projeto." },
-      { title: "Eficiência", text: "Poupe tempo e aumente a produtividade." },
-      { title: "Fácil de usar", text: "Interface intuitiva e configuração rápida." },
-      { title: "Compatibilidade", text: "Funciona com os principais modelos VITO." },
-    ],
-  },
-  "es-es": {
-    label: "Laser Level App",
-    titleWhite: "Nivelación profesional.",
-    titleGreen: "En la palma de tu mano.",
-    description:
-      "La aplicación VITO Laser Level transforma tu smartphone en un mando inteligente para tus niveles láser. Más precisión, más control, más eficiencia.",
-    compatibleTitle: "Compatible con los modelos",
-    downloadTitle: "Descárgala ahora",
-    downloadText: "Y lleva tu trabajo a otro nivel.",
-    play: "Disponible en Google Play",
-    apple: "Descargar en App Store",
-    bottom: [
-      { title: "Precisión", text: "Resultados perfectos en cada proyecto." },
-      { title: "Eficiencia", text: "Ahorra tiempo y aumenta la productividad." },
-      { title: "Fácil de usar", text: "Interfaz intuitiva y configuración rápida." },
-      { title: "Compatibilidad", text: "Funciona con los principales modelos VITO." },
-    ],
-  },
-  "fr-fr": {
-    label: "Laser Level App",
-    titleWhite: "Nivellement professionnel.",
-    titleGreen: "Dans le creux de la main.",
-    description:
-      "L’application VITO Laser Level transforme votre smartphone en commande intelligente pour vos niveaux laser. Plus de précision, plus de contrôle, plus d’efficacité.",
-    compatibleTitle: "Compatible avec les modèles",
-    downloadTitle: "Téléchargez maintenant",
-    downloadText: "Et faites passer votre travail au niveau supérieur.",
-    play: "Disponible sur Google Play",
-    apple: "Télécharger sur l’App Store",
-    bottom: [
-      { title: "Précision", text: "Des résultats parfaits à chaque projet." },
-      { title: "Efficacité", text: "Gagnez du temps et augmentez la productivité." },
-      { title: "Facile à utiliser", text: "Interface intuitive et configuration rapide." },
-      { title: "Compatibilité", text: "Fonctionne avec les principaux modèles VITO." },
-    ],
-  },
-  "en-en": {
-    label: "Laser Level App",
-    titleWhite: "Professional leveling.",
-    titleGreen: "In the palm of your hand.",
-    description:
-      "The VITO Laser Level app turns your smartphone into a smart remote for your laser levels. More precision, more control, more efficiency.",
-    compatibleTitle: "Compatible with the models",
-    downloadTitle: "Download now",
-    downloadText: "And take your work to another level.",
-    play: "Available on Google Play",
-    apple: "Download on the App Store",
-    bottom: [
-      { title: "Precision", text: "Perfect results on every project." },
-      { title: "Efficiency", text: "Save time and increase productivity." },
-      { title: "Easy to use", text: "Intuitive interface and quick setup." },
-      { title: "Compatibility", text: "Works with the main VITO models." },
-    ],
-  },
-  "de-de": {
-    label: "Laser Level App",
-    titleWhite: "Professionelles Nivellieren.",
-    titleGreen: "In Ihrer Handfläche.",
-    description:
-      "Die VITO Laser Level App verwandelt Ihr Smartphone in eine intelligente Fernbedienung für Ihre Laser-Nivelliergeräte. Mehr Präzision, mehr Kontrolle, mehr Effizienz.",
-    compatibleTitle: "Kompatibel mit den Modellen",
-    downloadTitle: "Jetzt herunterladen",
-    downloadText: "Und bringen Sie Ihre Arbeit auf ein neues Niveau.",
-    play: "Verfügbar bei Google Play",
-    apple: "Laden im App Store",
-    bottom: [
-      { title: "Präzision", text: "Perfekte Ergebnisse bei jedem Projekt." },
-      { title: "Effizienz", text: "Sparen Sie Zeit und steigern Sie die Produktivität." },
-      { title: "Einfach zu bedienen", text: "Intuitive Oberfläche und schnelle Einrichtung." },
-      { title: "Kompatibilität", text: "Funktioniert mit den wichtigsten VITO Modellen." },
-    ],
-  },
-};
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-const languages = [
-  { code: "pt-pt", label: "PT" },
-  { code: "es-es", label: "ES" },
-  { code: "fr-fr", label: "FR" },
-  { code: "en-en", label: "EN" },
-  { code: "de-de", label: "DE" },
-];
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
 
-const models = ["VINL4D16L60", "VINLE4D16L60", "VINLTT5L60", "VINLP4D16L60"];
-const bottomIcons = ["▱", "◷", "✓", "⚙"];
+    a { color: inherit; text-decoration: none; }
 
-export default function LaserLevelLandingPage() {
-  const [language, setLanguage] = useState("pt-pt");
-  const t = translations[language] || translations["pt-pt"];
+    .hero {
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid rgba(20, 200, 80, 0.35);
+      background:
+        radial-gradient(circle at 28% 48%, rgba(20, 200, 80, 0.22), transparent 24%),
+        linear-gradient(90deg, #070809 0%, #090b0d 45%, #040505 100%);
+    }
 
-  return (
-    <main className="min-h-screen bg-[#08090b] text-white">
-      <section className="relative overflow-hidden border-b border-green-500/30">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_28%_48%,rgba(22,163,74,0.22),transparent_24%),linear-gradient(90deg,#070809_0%,#090b0d_45%,#040505_100%)]" />
-        <div className="absolute left-0 bottom-36 h-0.5 w-full bg-green-500/70 shadow-[0_0_28px_rgba(34,197,94,0.9)]" />
-        <div className="absolute right-1/4 top-0 h-full w-px bg-green-500/25" />
-        <div className="absolute inset-0 opacity-30 bg-[linear-gradient(115deg,transparent_0%,transparent_48%,rgba(255,255,255,0.06)_49%,transparent_54%)]" />
+    .hero::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 140px;
+      width: 100%;
+      height: 2px;
+      background: rgba(20, 200, 80, 0.75);
+      box-shadow: 0 0 28px rgba(20, 200, 80, 0.95);
+    }
 
-        <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-10 px-6 py-10 lg:grid-cols-2 lg:px-14 lg:py-12">
-          <div className="flex min-h-[650px] flex-col justify-between">
-            <div>
-              <div className="mb-10">
-                <div className="text-5xl font-black tracking-tight text-[#f5b313]">▰VITO</div>
-                <div className="mt-3 text-xl font-bold uppercase tracking-wide text-green-500">{t.label}</div>
-              </div>
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: 0.28;
+      background: linear-gradient(115deg, transparent 0%, transparent 48%, rgba(255,255,255,0.06) 49%, transparent 54%);
+      pointer-events: none;
+    }
 
-              <h1 className="max-w-xl text-5xl font-black uppercase leading-[0.95] tracking-tight md:text-6xl">
-                <span className="block">{t.titleWhite}</span>
-                <span className="mt-2 block text-green-500">{t.titleGreen}</span>
-              </h1>
+    .container {
+      position: relative;
+      z-index: 2;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 48px 56px;
+    }
 
-              <p className="mt-7 max-w-lg text-xl leading-8 text-zinc-200">{t.description}</p>
-            </div>
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+      min-height: 700px;
+    }
 
-            <div className="relative mt-10 h-64 w-72">
-              <div className="absolute bottom-0 left-0 h-52 w-64 rounded-[2rem] border border-zinc-700 bg-zinc-900 shadow-2xl" />
-              <div className="absolute bottom-8 left-8 h-36 w-36 rounded-2xl border border-green-500/40 bg-black shadow-[0_0_30px_rgba(34,197,94,0.5)]" />
-              <div className="absolute bottom-20 left-12 h-20 w-4 rounded-full bg-green-500 shadow-[0_0_22px_rgba(34,197,94,1)]" />
-              <div className="absolute bottom-16 left-28 rounded-full border border-green-500/60 px-2 py-1 text-sm font-black text-green-400">H</div>
-              <div className="absolute bottom-16 left-40 rounded-full border border-green-500/60 px-2 py-1 text-sm font-black text-green-400">H</div>
-              <div className="absolute bottom-16 left-52 rounded-full border border-green-500/60 px-2 py-1 text-sm font-black text-green-400">H</div>
-            </div>
-          </div>
+    .logo {
+      font-size: 54px;
+      font-weight: 900;
+      color: var(--yellow);
+      letter-spacing: -2px;
+      line-height: 1;
+    }
 
-          <div className="relative flex flex-col items-end gap-8">
-            <div className="flex items-center gap-2 rounded-lg border border-white/30 bg-white/5 px-3 py-2">
-              <span>🌐</span>
-              <select
-                value={language}
-                onChange={(event) => setLanguage(event.target.value)}
-                className="bg-transparent text-sm font-bold text-white outline-none"
-              >
-                {languages.map((item) => (
-                  <option key={item.code} value={item.code} className="bg-zinc-950 text-white">
-                    {item.label}
-                  </option>
-                ))}
-              </select>
-            </div>
+    .subtitle {
+      margin-top: 12px;
+      color: var(--green);
+      font-size: 20px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
 
-            <div className="relative mx-auto w-[330px] rounded-[3rem] border border-zinc-500 bg-black p-4 shadow-[0_0_32px_rgba(34,197,94,0.3)] md:w-[380px]">
-              <div className="absolute left-1/2 top-3 z-20 h-6 w-32 -translate-x-1/2 rounded-b-2xl bg-black" />
-              <div className="relative h-[620px] overflow-hidden rounded-[2.4rem] bg-zinc-900">
-                {/* Coloque aqui a imagem real da app */}
-                <div className="absolute inset-0 flex items-center justify-center border-2 border-dashed border-green-500/60 bg-zinc-900 text-center">
-                  <div className="px-8">
-                    <div className="text-6xl text-green-500">▧</div>
-                    <p className="mt-4 text-2xl font-black text-green-500">Imagem da aplicação</p>
-                    <p className="mt-3 text-zinc-400">Coloque aqui a imagem da app</p>
-                    <p className="mt-2 text-xs text-zinc-500">/src/assets/app-screen.png</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+    h1 {
+      margin-top: 58px;
+      max-width: 560px;
+      font-size: 62px;
+      line-height: 0.95;
+      text-transform: uppercase;
+      font-weight: 900;
+      letter-spacing: -2px;
+    }
 
-      <section className="border-b border-white/10 bg-[#08090b] px-6 py-10 lg:px-14">
-        <div className="mx-auto max-w-7xl">
-          <h2 className="text-2xl font-black uppercase tracking-wide">{t.compatibleTitle}</h2>
-          <div className="mt-8 grid grid-cols-2 gap-8 md:grid-cols-4">
-            {models.map((model) => (
-              <div key={model} className="text-center">
-                <div className="mx-auto mb-4 h-24 w-28 rounded-2xl border border-green-500/20 bg-zinc-900 shadow-[0_0_20px_rgba(34,197,94,0.18)]">
-                  <div className="mx-auto mt-5 h-12 w-16 rounded-lg border border-zinc-600 bg-black" />
-                  <div className="mx-auto mt-2 h-2 w-14 rounded bg-green-500" />
-                </div>
-                <p className="text-xl font-black">{model}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+    h1 span { display: block; color: var(--green); margin-top: 8px; }
 
-      <section className="border-b border-white/10 bg-[#08090b] px-6 py-8 lg:px-14">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-8 md:grid-cols-[150px_1fr_1.6fr]">
-          <div className="flex h-32 w-32 items-center justify-center rounded-3xl bg-green-500 text-center text-3xl font-black text-black">
-            VITO<br />LASER
-          </div>
+    .description {
+      margin-top: 28px;
+      max-width: 530px;
+      color: #e4e4e7;
+      font-size: 21px;
+      line-height: 1.55;
+    }
+
+    .device-art {
+      position: relative;
+      margin-top: 42px;
+      width: 300px;
+      height: 260px;
+    }
+
+    .device-base {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 260px;
+      height: 205px;
+      border: 1px solid #3f3f46;
+      border-radius: 32px;
+      background: #111216;
+      box-shadow: 0 22px 60px rgba(0,0,0,0.6);
+    }
+
+    .device-front {
+      position: absolute;
+      left: 38px;
+      bottom: 34px;
+      width: 145px;
+      height: 145px;
+      border: 1px solid rgba(20, 200, 80, 0.45);
+      border-radius: 18px;
+      background: #020303;
+      box-shadow: 0 0 30px rgba(20, 200, 80, 0.5);
+    }
+
+    .laser-window {
+      position: absolute;
+      left: 52px;
+      bottom: 82px;
+      width: 18px;
+      height: 80px;
+      border-radius: 99px;
+      background: var(--green);
+      box-shadow: 0 0 24px rgba(20, 200, 80, 1);
+    }
+
+    .device-buttons {
+      position: absolute;
+      left: 125px;
+      bottom: 67px;
+      display: flex;
+      gap: 8px;
+    }
+
+    .device-buttons span {
+      display: grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      border: 1px solid rgba(20, 200, 80, 0.65);
+      border-radius: 50%;
+      color: var(--green);
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .right-side { display: flex; flex-direction: column; align-items: flex-end; gap: 36px; }
+
+    .language-box {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 9px;
+      padding: 9px 12px;
+      background: rgba(255,255,255,0.05);
+    }
+
+    select {
+      background: transparent;
+      color: white;
+      border: 0;
+      outline: 0;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    option { background: #08090b; color: white; }
+
+    .phone {
+      position: relative;
+      width: 380px;
+      padding: 14px;
+      border-radius: 48px;
+      border: 1px solid #71717a;
+      background: #000;
+      box-shadow: 0 0 32px rgba(20, 200, 80, 0.32);
+    }
+
+    .notch {
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      z-index: 3;
+      transform: translateX(-50%);
+      width: 130px;
+      height: 25px;
+      background: #000;
+      border-radius: 0 0 18px 18px;
+    }
+
+    .phone-screen {
+      position: relative;
+      overflow: hidden;
+      height: 620px;
+      border-radius: 38px;
+      background: #18181b;
+    }
+
+    .app-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      border: 2px dashed rgba(20, 200, 80, 0.7);
+      background: #18181b;
+      padding: 32px;
+    }
+
+    .app-placeholder-icon { color: var(--green); font-size: 64px; line-height: 1; }
+    .app-placeholder-title { margin-top: 16px; color: var(--green); font-size: 26px; font-weight: 900; }
+    .app-placeholder-text { margin-top: 12px; color: #a1a1aa; font-size: 16px; line-height: 1.5; }
+
+    .section {
+      padding: 42px 56px;
+      border-bottom: 1px solid var(--line);
+      background: #08090b;
+    }
+
+    .section-inner { max-width: 1280px; margin: 0 auto; }
+    .section h2 { font-size: 26px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.4px; }
+
+    .models {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 36px;
+      margin-top: 34px;
+    }
+
+    .model-card { text-align: center; }
+
+    .model-image {
+      width: 120px;
+      height: 100px;
+      margin: 0 auto 16px;
+      border-radius: 20px;
+      border: 1px solid rgba(20, 200, 80, 0.22);
+      background: #111216;
+      box-shadow: 0 0 20px rgba(20, 200, 80, 0.18);
+      padding-top: 22px;
+    }
+
+    .model-body {
+      width: 66px;
+      height: 46px;
+      margin: 0 auto;
+      border: 1px solid #52525b;
+      border-radius: 10px;
+      background: #000;
+    }
+
+    .model-light {
+      width: 58px;
+      height: 8px;
+      margin: 9px auto 0;
+      border-radius: 99px;
+      background: var(--green);
+    }
+
+    .model-card p { font-size: 21px; font-weight: 900; }
+
+    .download-grid {
+      display: grid;
+      grid-template-columns: 150px 1fr 1.6fr;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .app-icon {
+      width: 130px;
+      height: 130px;
+      display: grid;
+      place-items: center;
+      border-radius: 28px;
+      background: var(--green);
+      color: #000;
+      text-align: center;
+      font-size: 30px;
+      line-height: 1;
+      font-weight: 900;
+    }
+
+    .download-title { font-size: 26px; font-weight: 900; text-transform: uppercase; }
+    .download-text { margin-top: 10px; color: var(--green); font-size: 28px; line-height: 1.2; font-weight: 900; text-transform: uppercase; }
+
+    .store-buttons { display: flex; gap: 22px; justify-content: flex-end; flex-wrap: wrap; }
+
+    .store-button {
+      min-height: 78px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      border: 2px solid var(--green);
+      border-radius: 14px;
+      padding: 16px 28px;
+      font-size: 20px;
+      font-weight: 900;
+      transition: 0.2s ease;
+    }
+
+    .store-button:hover { background: var(--green); color: #000; }
+    .store-icon { font-size: 38px; line-height: 1; }
+
+    .bottom-section { padding: 34px 56px; background: var(--panel); }
+
+    .bottom-grid {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px;
+    }
+
+    .bottom-item { display: flex; gap: 16px; align-items: flex-start; }
+    .bottom-icon { color: var(--green); font-size: 31px; line-height: 1; }
+    .bottom-item h3 { color: var(--green); font-size: 16px; font-weight: 900; text-transform: uppercase; }
+    .bottom-item p { margin-top: 5px; color: var(--muted); font-size: 14px; line-height: 1.45; }
+
+    @media (max-width: 900px) {
+      .container, .section, .bottom-section { padding-left: 24px; padding-right: 24px; }
+      .hero-grid, .download-grid { grid-template-columns: 1fr; }
+      .right-side { align-items: center; }
+      h1 { font-size: 44px; }
+      .phone { width: min(100%, 360px); }
+      .models, .bottom-grid { grid-template-columns: 1fr 1fr; }
+      .store-buttons { justify-content: flex-start; }
+    }
+
+    @media (max-width: 520px) {
+      .models, .bottom-grid { grid-template-columns: 1fr; }
+      .phone-screen { height: 560px; }
+      .logo { font-size: 42px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
           <div>
-            <h2 className="text-2xl font-black uppercase">{t.downloadTitle}</h2>
-            <p className="mt-2 text-2xl font-black uppercase leading-tight text-green-500">{t.downloadText}</p>
+            <div class="logo">▰VITO</div>
+            <div class="subtitle" data-i18n="label">Laser Level App</div>
           </div>
-          <div className="flex flex-col gap-5 sm:flex-row md:justify-end">
-            <a
-              href="https://play.google.com/store"
-              target="_blank"
-              rel="noreferrer"
-              className="flex min-h-20 items-center justify-center gap-4 rounded-xl border-2 border-green-500 px-8 text-xl font-black transition hover:bg-green-500 hover:text-black"
-            >
-              <span className="text-4xl">▶</span> {t.play}
-            </a>
-            <a
-              href="https://www.apple.com/app-store/"
-              target="_blank"
-              rel="noreferrer"
-              className="flex min-h-20 items-center justify-center gap-4 rounded-xl border-2 border-green-500 px-8 text-xl font-black transition hover:bg-green-500 hover:text-black"
-            >
-              <span className="text-4xl"></span> {t.apple}
-            </a>
+
+          <h1>
+            <span style="color:white; margin-top:58px;">Nivelamento profissional.</span>
+            <span data-i18n="titleGreen">Na palma da mão.</span>
+          </h1>
+
+          <p class="description" data-i18n="description">
+            A aplicação VITO Laser Level transforma o seu smartphone num comando inteligente para os seus níveis a laser. Mais precisão, mais controlo, mais eficiência.
+          </p>
+
+          <div class="device-art" aria-hidden="true">
+            <div class="device-base"></div>
+            <div class="device-front"></div>
+            <div class="laser-window"></div>
+            <div class="device-buttons">
+              <span>H</span><span>H</span><span>H</span>
+            </div>
           </div>
         </div>
-      </section>
 
-      <section className="bg-[#111216] px-6 py-8 lg:px-14">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 md:grid-cols-4">
-          {t.bottom.map((item, index) => (
-            <div key={item.title} className="flex items-start gap-4">
-              <div className="text-3xl text-green-500">{bottomIcons[index]}</div>
-              <div>
-                <h3 className="font-black uppercase text-green-500">{item.title}</h3>
-                <p className="mt-1 text-sm text-zinc-400">{item.text}</p>
+        <div class="right-side">
+          <div class="language-box">
+            <span>🌐</span>
+            <select id="languageSelect" aria-label="Selecionar idioma">
+              <option value="pt-pt">PT</option>
+              <option value="es-es">ES</option>
+              <option value="fr-fr">FR</option>
+              <option value="en-en">EN</option>
+              <option value="de-de">DE</option>
+            </select>
+          </div>
+
+          <div class="phone">
+            <div class="notch"></div>
+            <div class="phone-screen">
+              <!-- Para usar imagem real:
+              1. coloque a imagem na mesma pasta deste ficheiro com o nome app-screen.png
+              2. apague o bloco .app-placeholder abaixo
+              3. descomente a linha seguinte:
+              <img src="app-screen.png" alt="Imagem da aplicação" style="width:100%;height:100%;object-fit:cover;display:block;" />
+              -->
+              <div class="app-placeholder">
+                <div>
+                  <div class="app-placeholder-icon">▧</div>
+                  <div class="app-placeholder-title">Imagem da aplicação</div>
+                  <div class="app-placeholder-text">Coloque aqui a imagem da app<br />app-screen.png</div>
+                </div>
               </div>
             </div>
-          ))}
+          </div>
         </div>
-      </section>
-    </main>
-  );
-}
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-inner">
+        <h2 data-i18n="compatibleTitle">Compatível com os modelos</h2>
+        <div class="models">
+          <div class="model-card"><div class="model-image"><div class="model-body"></div><div class="model-light"></div></div><p>VINL4D16L60</p></div>
+          <div class="model-card"><div class="model-image"><div class="model-body"></div><div class="model-light"></div></div><p>VINLE4D16L60</p></div>
+          <div class="model-card"><div class="model-image"><div class="model-body"></div><div class="model-light"></div></div><p>VINLTT5L60</p></div>
+          <div class="model-card"><div class="model-image"><div class="model-body"></div><div class="model-light"></div></div><p>VINLP4D16L60</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-inner download-grid">
+        <div class="app-icon">VITO<br />LASER</div>
+        <div>
+          <div class="download-title" data-i18n="downloadTitle">Descarregue já</div>
+          <div class="download-text" data-i18n="downloadText">E leve o seu trabalho a outro nível.</div>
+        </div>
+        <div class="store-buttons">
+          <a class="store-button" href="https://play.google.com/store" target="_blank" rel="noreferrer"><span class="store-icon">▶</span><span data-i18n="play">Disponível no Google Play</span></a>
+          <a class="store-button" href="https://www.apple.com/app-store/" target="_blank" rel="noreferrer"><span class="store-icon"></span><span data-i18n="apple">Descarregar na App Store</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="bottom-section">
+      <div class="bottom-grid">
+        <div class="bottom-item"><div class="bottom-icon">▱</div><div><h3 data-i18n="bottom0Title">Precisão</h3><p data-i18n="bottom0Text">Resultados perfeitos em cada projeto.</p></div></div>
+        <div class="bottom-item"><div class="bottom-icon">◷</div><div><h3 data-i18n="bottom1Title">Eficiência</h3><p data-i18n="bottom1Text">Poupe tempo e aumente a produtividade.</p></div></div>
+        <div class="bottom-item"><div class="bottom-icon">✓</div><div><h3 data-i18n="bottom2Title">Fácil de usar</h3><p data-i18n="bottom2Text">Interface intuitiva e configuração rápida.</p></div></div>
+        <div class="bottom-item"><div class="bottom-icon">⚙</div><div><h3 data-i18n="bottom3Title">Compatibilidade</h3><p data-i18n="bottom3Text">Funciona com os principais modelos VITO.</p></div></div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const translations = {
+      "pt-pt": { label: "Laser Level App", titleWhite: "Nivelamento profissional.", titleGreen: "Na palma da mão.", description: "A aplicação VITO Laser Level transforma o seu smartphone num comando inteligente para os seus níveis a laser. Mais precisão, mais controlo, mais eficiência.", compatibleTitle: "Compatível com os modelos", downloadTitle: "Descarregue já", downloadText: "E leve o seu trabalho a outro nível.", play: "Disponível no Google Play", apple: "Descarregar na App Store", bottom: [{ title: "Precisão", text: "Resultados perfeitos em cada projeto." }, { title: "Eficiência", text: "Poupe tempo e aumente a produtividade." }, { title: "Fácil de usar", text: "Interface intuitiva e configuração rápida." }, { title: "Compatibilidade", text: "Funciona com os principais modelos VITO." }] },
+      "es-es": { label: "Laser Level App", titleWhite: "Nivelación profesional.", titleGreen: "En la palma de tu mano.", description: "La aplicación VITO Laser Level transforma tu smartphone en un mando inteligente para tus niveles láser. Más precisión, más control, más eficiencia.", compatibleTitle: "Compatible con los modelos", downloadTitle: "Descárgala ahora", downloadText: "Y lleva tu trabajo a otro nivel.", play: "Disponible en Google Play", apple: "Descargar en App Store", bottom: [{ title: "Precisión", text: "Resultados perfectos en cada proyecto." }, { title: "Eficiencia", text: "Ahorra tiempo y aumenta la productividad." }, { title: "Fácil de usar", text: "Interfaz intuitiva y configuración rápida." }, { title: "Compatibilidad", text: "Funciona con los principales modelos VITO." }] },
+      "fr-fr": { label: "Laser Level App", titleWhite: "Nivellement professionnel.", titleGreen: "Dans le creux de la main.", description: "L’application VITO Laser Level transforme votre smartphone en commande intelligente pour vos niveaux laser. Plus de précision, plus de contrôle, plus d’efficacité.", compatibleTitle: "Compatible avec les modèles", downloadTitle: "Téléchargez maintenant", downloadText: "Et faites passer votre travail au niveau supérieur.", play: "Disponible sur Google Play", apple: "Télécharger sur l’App Store", bottom: [{ title: "Précision", text: "Des résultats parfaits à chaque projet." }, { title: "Efficacité", text: "Gagnez du temps et augmentez la productivité." }, { title: "Facile à utiliser", text: "Interface intuitive et configuration rapide." }, { title: "Compatibilité", text: "Fonctionne avec les principaux modèles VITO." }] },
+      "en-en": { label: "Laser Level App", titleWhite: "Professional leveling.", titleGreen: "In the palm of your hand.", description: "The VITO Laser Level app turns your smartphone into a smart remote for your laser levels. More precision, more control, more efficiency.", compatibleTitle: "Compatible with the models", downloadTitle: "Download now", downloadText: "And take your work to another level.", play: "Available on Google Play", apple: "Download on the App Store", bottom: [{ title: "Precision", text: "Perfect results on every project." }, { title: "Efficiency", text: "Save time and increase productivity." }, { title: "Easy to use", text: "Intuitive interface and quick setup." }, { title: "Compatibility", text: "Works with the main VITO models." }] },
+      "de-de": { label: "Laser Level App", titleWhite: "Professionelles Nivellieren.", titleGreen: "In Ihrer Handfläche.", description: "Die VITO Laser Level App verwandelt Ihr Smartphone in eine intelligente Fernbedienung für Ihre Laser-Nivelliergeräte. Mehr Präzision, mehr Kontrolle, mehr Effizienz.", compatibleTitle: "Kompatibel mit den Modellen", downloadTitle: "Jetzt herunterladen", downloadText: "Und bringen Sie Ihre Arbeit auf ein neues Niveau.", play: "Verfügbar bei Google Play", apple: "Laden im App Store", bottom: [{ title: "Präzision", text: "Perfekte Ergebnisse bei jedem Projekt." }, { title: "Effizienz", text: "Sparen Sie Zeit und steigern Sie die Produktivität." }, { title: "Einfach zu bedienen", text: "Intuitive Oberfläche und schnelle Einrichtung." }, { title: "Kompatibilität", text: "Funktioniert mit den wichtigsten VITO Modellen." }] }
+    };
+
+    const select = document.getElementById("languageSelect");
+
+    function setText(key, value) {
+      const element = document.querySelector(`[data-i18n="${key}"]`);
+      if (element) element.textContent = value;
+    }
+
+    function applyLanguage(lang) {
+      const t = translations[lang] || translations["pt-pt"];
+      document.documentElement.lang = lang;
+      setText("label", t.label);
+      setText("titleGreen", t.titleGreen);
+      document.querySelector("h1 span:first-child").textContent = t.titleWhite;
+      setText("description", t.description);
+      setText("compatibleTitle", t.compatibleTitle);
+      setText("downloadTitle", t.downloadTitle);
+      setText("downloadText", t.downloadText);
+      setText("play", t.play);
+      setText("apple", t.apple);
+      t.bottom.forEach((item, index) => {
+        setText(`bottom${index}Title`, item.title);
+        setText(`bottom${index}Text`, item.text);
+      });
+    }
+
+    select.addEventListener("change", function () {
+      applyLanguage(this.value);
+    });
+  </script>
+</body>
+</html>
